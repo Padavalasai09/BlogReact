@@ -14,3 +14,13 @@ input:focus, textarea:focus {
 .edit-btn:hover {
     background-color: #E11D48;
 }
+
+.error-message{
+    
+
+    color:red;
+    /* margin-left: 100px; */
+   
+    font-size: 18px;
+    font-weight:bold;
+}

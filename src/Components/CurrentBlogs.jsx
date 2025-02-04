@@ -5,8 +5,9 @@ import { Eye, Edit, Trash2 } from 'lucide-react';
 
 const CurrentBlogs = () => {
     var data = JSON.parse(localStorage.getItem('blog')) || [];
+   
     const nav = useNavigate();
-
+    console.log(data);
     const viewBlog = (index) => {
         var data = JSON.parse(localStorage.getItem('blog'));
         data[index].views = (data[index].views || 0) + 1; 
@@ -90,7 +91,10 @@ const CurrentBlogs = () => {
                         </div>
                     ))
                 ) : (
-                    <p className="text-gray-500 text-center col-span-3">No blogs available.</p>
+                    <p className="text-gray-500 text-center col-span-3 text-lg font-semibold bg-gray-100 py-4 rounded-lg shadow-md">
+            🚀 No blogs available. Start writing now!
+</p>
+
                 )}
             </div>
         </div>
