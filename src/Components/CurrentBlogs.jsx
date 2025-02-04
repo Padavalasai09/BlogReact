@@ -1,86 +1,100 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React from 'react';
+import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { Eye, Edit, Trash2 } from 'lucide-react'; 
+
 const CurrentBlogs = () => {
+    var data = JSON.parse(localStorage.getItem('blog')) || [];
+    const nav = useNavigate();
 
-    var data=JSON.parse(localStorage.getItem('blog'));
-    console.log(data);
-    const nav=useNavigate()
-    const  viewBlog=(index)=>{
-        var data=JSON.parse(localStorage.getItem('blog'));
-        console.log(data,"blog");
-        data.map((blog,i)=>{
-                if(i===index){
-                    // console.log(data[i]);
-                    localStorage.setItem('selectedBlog',JSON.stringify(data[i]));
-                    nav('/viewBlog')
-                }
-    
-    })
+    const viewBlog = (index) => {
+        var data = JSON.parse(localStorage.getItem('blog'));
+        data[index].views = (data[index].views || 0) + 1; 
+        localStorage.setItem('blog', JSON.stringify(data));
+        localStorage.setItem('selectedBlog', JSON.stringify(data[index]));
+        nav('/viewBlog');
+    };
+
+    const editBlog = (index) => {
+        localStorage.setItem('editBlog', JSON.stringify(index));
+        nav('/editBlog');
+    };
+
+    const deleteBlog = (index) => {
+        var new_data = data.filter((_, i) => i !== index);
+        localStorage.setItem('blog', JSON.stringify(new_data));
+        nav('/');
+    };
+
+    return (
+        <div>
+            <div className='flex justify-end p-4'>
+                <Link 
+                    to='/addBlog' 
+                    className="bg-pink-600 text-white px-6 py-3 rounded-md hover:bg-pink-700 cursor-pointer ml-auto"
+                >
+                    + Add Blog
+                </Link>
+            </div>
 
 
-    }
-    const editBlog=(index)=>{
-        localStorage.setItem('editBlog',JSON.stringify(index));
-    }
-  return (
-    <div>
-      
-        <Link to='/addBlog' className="bg-pink-600 text-white px-6 py-3 rounded-md hover:bg-pink-700 cursor-pointer mt-8 ml-[1700px] block mr-8">
-            + Add Blog
-           
-            </Link>
-        
-        <div className="cards grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-8">
-            {
-                data.map((item,index)=>{
-                    return(
-                        <div className="card1 bg-white rounded-lg shadow-lg p-5 text-black transition-transform hover:scale-105" key={index}>
-                        <h3 className="text-xl font-semibold mb-4 text-gray-900">{item.title}</h3>
+            <div className="cards grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-8">
+                {data.length > 0 ? (
+                    data.map((item, index) => (
+                        <div 
+                            className="bg-white rounded-lg shadow-lg p-6 text-black transition-transform hover:scale-105 relative"
+                            key={index}>
 
-                        <p className="text-gray-700 text-sm h-24 overflow-hidden mb-4">
-                            {item.description}
-                        </p>
+                            <div className="flex items-center gap-4 mb-4">
+                                <img 
+                                    src={item.profilePic || "https://tse2.mm.bing.net/th?id=OIP.XIEQoNCr2Qa2zWFYp1468wHaHa&pid=Api&P=0&h=180"} 
+                                    alt="Profile"
+                                    className="w-12 h-12 rounded-full border-2 border-gray-300"
+                                />
+                                <h3 className="text-xl font-semibold text-gray-900">{item.title}</h3>
+                            </div>
 
-                    
-                        <div className="flex gap-4">
-                            <button
-                            className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
-                            onClick={() => viewBlog(index)}
-                            >
-                            View
-                            </button>
-                            <button
-                            className="bg-yellow-600 text-white px-4 py-2 rounded-md hover:bg-yellow-700"
-                            onClick={() => editBlog(index)}
-                            >
-                            Edit
-                            </button>
-                            <button
-                            className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700"
-                            onClick={() => deleteBlog(index)}
-                            >
-                            Delete
-                            </button>
+                            <p className="text-gray-700 text-sm h-24 overflow-hidden mb-4">
+                                {item.description}
+                            </p>
+                            <div className="flex items-center gap-2 text-gray-600 text-sm absolute top-4 right-4">
+                                <Eye size={18} />
+                                <span>{item.views || 0} views</span>
+                            </div>
+
+                            <div className="flex gap-4 mt-4">
+                                <button 
+                                    className="flex items-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
+                                    onClick={() => viewBlog(index)}
+                                >
+                                    <Eye size={18} />
+                                    View
+                                </button>
+
+                                <button 
+                                    className="flex items-center gap-2 bg-yellow-600 text-white px-4 py-2 rounded-md hover:bg-yellow-700"
+                                    onClick={() => editBlog(index)}
+                                >
+                                    <Edit size={18} />
+                                    Edit
+                                </button>
+
+                                <button 
+                                    className="flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700"
+                                    onClick={() => deleteBlog(index)}
+                                >
+                                    <Trash2 size={18} />
+                                    Delete
+                                </button>
+                            </div>
                         </div>
-                        </div>
-                    )
-                })
-            }
-
-
-
+                    ))
+                ) : (
+                    <p className="text-gray-500 text-center col-span-3">No blogs available.</p>
+                )}
+            </div>
         </div>
-      
-    </div>
-  )
-}
+    );
+};
 
-export default CurrentBlogs
-
-
-
-
-
-
-
+export default CurrentBlogs;
