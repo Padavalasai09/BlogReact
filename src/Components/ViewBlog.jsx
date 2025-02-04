@@ -21,9 +21,9 @@ const ViewBlog = () => {
         <div className="bg-gray-100 min-h-screen">
             <Header />
 
-            {/* <marquee behavior="scroll" direction="left" className="text-lg font-semibold text-yellow-500 bg-gray-200 py-2">
+            <marquee behavior="scroll" direction="left" className="text-lg font-semibold text-yellow-500 bg-gray-200 py-2">
                 🔥 Trending Blogs | Stay Updated with the Latest Articles ✍️
-            </marquee> */}
+            </marquee>
 
   
             <div className="max-w-4xl mx-auto my-8 p-6 bg-white shadow-lg rounded-lg">
